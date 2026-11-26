@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="GAM — Possibilidade Imediata. Marketplace de Moçambique.">
+  <title>GAM — Possibilidade Imediata</title>
+  <style>
+    :root{
+      --bg:#f5f6f8;--surface:#fff;--ink:#172033;--muted:#687386;
+      --gold:#e8bd45;--gold-dark:#b98a13;--line:#e5e8ee;--dark:#111827;
+      --green:#16834b;--danger:#b42318;--radius:18px;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink)}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .topbar{background:var(--dark);color:#fff;padding:12px 16px;text-align:center;font-size:13px}
+    header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+    .head-inner{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:max-content}
+    .logo{width:44px;height:44px;border-radius:14px;background:var(--gold);display:grid;place-items:center;color:#171717;font-weight:950;font-size:20px}
+    .brand strong{display:block;font-size:19px;letter-spacing:.3px}
+    .brand small{display:block;color:var(--muted);font-size:11px}
+    .search{flex:1;display:flex;gap:8px;min-width:100px}
+    .search input{width:100%;min-width:0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#f8f9fb;outline:none}
+    .search input:focus,.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold-dark);box-shadow:0 0 0 3px #e8bd4530}
+    .btn{border:0;border-radius:12px;padding:11px 15px;font-weight:750}
+    .btn-gold{background:var(--gold);color:#171717}
+    .btn-dark{background:var(--dark);color:#fff}
+    .btn-light{background:#f0f2f5;color:var(--ink)}
+    .btn-danger{background:#fff0ef;color:var(--danger)}
+    .head-actions{display:flex;gap:8px;align-items:center}
+    .cart-count{display:inline-grid;place-items:center;background:var(--gold);color:#171717;border-radius:50%;width:21px;height:21px;font-size:11px;margin-left:4px}
+    main{max-width:1180px;margin:24px auto;padding:0 18px 60px}
+    .hero{background:linear-gradient(115deg,#151d2d,#26364c);border-radius:24px;color:white;padding:30px;display:grid;grid-template-columns:1.4fr .8fr;gap:20px;align-items:center;overflow:hidden}
+    .hero h1{font-size:clamp(27px,4vw,44px);line-height:1.08;margin:8px 0 12px}
+    .hero p{color:#d5dbe5;max-width:570px;line-height:1.6;margin:0 0 18px}
+    .hero-tag{display:inline-block;color:#171717;background:var(--gold);font-size:12px;font-weight:850;padding:6px 10px;border-radius:99px}
+    .hero-art{font-size:clamp(75px,12vw,135px);text-align:center;filter:drop-shadow(0 15px 18px #0005)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:30px 0 15px}
+    h2{font-size:22px;margin:0}
+    .muted{color:var(--muted);font-size:13px}
+    .categories{display:flex;gap:9px;overflow-x:auto;padding:2px 0 7px}
+    .chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:9px 14px;white-space:nowrap;color:#384256;font-weight:650}
+    .chip.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+    .product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+    .product-card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+    .product-image{height:175px;background:#f0f2f5;display:grid;place-items:center;font-size:66px;overflow:hidden}
+    .product-image img{width:100%;height:100%;object-fit:cover}
+    .product-info{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .product-info h3{font-size:15px;margin:0;line-height:1.35}
+    .price{font-weight:900;font-size:19px;color:#171717}
+    .product-meta{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:6px}
+    .product-desc{font-size:12px;color:#596579;line-height:1.4;min-height:32px}
+    .product-actions{display:flex;gap:7px;margin-top:auto}
+    .product-actions .btn{flex:1;padding:9px 8px;font-size:12px}
+    .empty{grid-column:1/-1;text-align:center;padding:35px 15px;background:#fff;border:1px dashed #cbd2dc;border-radius:16px;color:var(--muted)}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:28px}
+    .panel-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:13px;font-weight:750}
+    .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;outline:none}
+    .field textarea{min-height:90px;resize:vertical}
+    .hint{font-size:12px;color:var(--muted);line-height:1.45}
+    .preview{width:100%;max-height:190px;object-fit:contain;border-radius:12px;background:#f3f4f6;display:none}
+    .notice{padding:12px 14px;border-radius:12px;background:#fff8df;color:#6b5208;font-size:13px;line-height:1.5;margin-top:15px}
+    footer{background:var(--dark);color:#d8deea;padding:25px 18px;text-align:center;font-size:13px}
+    .modal-backdrop{position:fixed;inset:0;background:#10182799;display:none;align-items:center;justify-content:center;padding:16px;z-index:30}
+    .modal-backdrop.show{display:flex}
+    .modal{background:#fff;border-radius:20px;width:min(520px,100%);max-height:85vh;overflow:auto;padding:20px}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .modal-head h2{font-size:20px}
+    .cart-line{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+    .cart-line small{display:block;color:var(--muted)}
+    .cart-total{display:flex;justify-content:space-between;font-weight:900;font-size:18px;padding:16px 0}
+    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#172033;color:white;padding:12px 17px;border-radius:12px;box-shadow:0 8px 25px #0003;display:none;z-index:50;font-size:13px;max-width:90%;text-align:center}
+    .toast.show{display:block}
+    @media(max-width:850px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.head-inner{flex-wrap:wrap}.search{order:3;flex-basis:100%}.hero{grid-template-columns:1fr .45fr}}
+    @media(max-width:620px){
+      .topbar{font-size:11px}.head-inner{padding:11px 13px;gap:10px}.brand strong{font-size:16px}.logo{width:39px;height:39px}
+      .head-actions{margin-left:auto}.head-actions .btn{padding:9px 10px;font-size:12px}
+      main{padding:0 13px 45px;margin:16px auto}.hero{padding:23px 19px;grid-template-columns:1fr}.hero-art{display:none}.hero h1{font-size:30px}
+      .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product-image{height:135px;font-size:54px}
+      .product-info{padding:11px;gap:7px}.product-info h3{font-size:13px}.price{font-size:17px}.product-actions{flex-direction:column}
+      .product-actions .btn{width:100%}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+      .panel{padding:15px}.section-head{margin-top:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">GAM — O mercado que aproxima Moçambique 🇲🇿</div>
+  <header>
+    <div class="head-inner">
+      <div class="brand">
+        <div class="logo">G</div>
+        <div><strong>GAM MARKET</strong><small>Possibilidade Imediata</small></div>
+      </div>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos">
+      </div>
+      <div class="head-actions">
+        <button class="btn btn-dark" id="cartButton">Carrinho <span class="cart-count" id="cartCount">0</span></button>
+        <button class="btn btn-gold" id="sellerButton">Vender</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="hero-tag">COMPRE • VENDA • CRESÇA</span>
+        <h1>Encontre o que procura.<br>Venda para Moçambique.</h1>
+        <p>O GAM aproxima compradores e vendedores. Descubra produtos, compare preços e fale diretamente com quem vende.</p>
+        <button class="btn btn-gold" id="seeProducts">Explorar produtos</button>
+      </div>
+      <div class="hero-art" aria-hidden="true">🛍️</div>
+    </section>
+
+    <section id="catalogue">
+      <div class="section-head">
+        <div><h2>Produtos em destaque</h2><div class="muted">Oportunidades perto de si</div></div>
+        <span class="muted" id="productCount"></span>
+      </div>
+      <div class="categories" id="categoryList">
+        <button class="chip active" data-category="Todos">Todos</button>
+        <button class="chip" data-category="Telemóveis">Telemóveis</button>
+        <button class="chip" data-category="Moda">Moda</button>
+        <button class="chip" data-category="Casa">Casa</button>
+        <button class="chip" data-category="Eletrónica">Eletrónica</button>
+        <button class="chip" data-category="Alimentação">Alimentação</button>
+        <button class="chip" data-category="Veículos">Veículos</button>
+        <button class="chip" data-category="Outros">Outros</button>
+      </div>
+      <div class="product-grid" id="products"></div>
+    </section>
+
+    <section class="panel" id="sellerPanel">
+      <div class="panel-title">
+        <div><h2>Área do vendedor</h2><div class="muted">Adicione produtos ao catálogo deste dispositivo</div></div>
+        <span class="hero-tag">ANUNCIAR</span>
+      </div>
+      <form id="productForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="productName">Nome do produto *</label>
+            <input id="productName" required maxlength="70" placeholder="Ex.: Telefone Samsung">
+          </div>
+          <div class="field">
+            <label for="productPrice">Preço em meticais (MT) *</label>
+            <input id="productPrice" type="number" min="1" step="1" required placeholder="Ex.: 12500">
+          </div>
+          <div class="field">
+            <label for="productCategory">Categoria *</label>
+            <select id="productCategory" required>
+              <option value="">Escolher categoria</option>
+              <option>Telemóveis</option><option>Moda</option><option>Casa</option>
+              <option>Eletrónica</option><option>Alimentação</option><option>Veículos</option><option>Outros</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="productLocation">Localização *</label>
+            <input id="productLocation" required placeholder="Ex.: Maputo, Matola, Beira">
+          </div>
+          <div class="field">
+            <label for="sellerContact">Contacto do vendedor *</label>
+            <input id="sellerContact" required inputmode="tel" placeholder="Ex.: 84xxxxxxx">
+          </div>
+          <div class="field">
+            <label for="productPhoto">Fotografia do produto</label>
+            <input id="productPhoto" type="file" accept="image/*">
+          </div>
+          <div class="field full">
+            <img id="photoPreview" class="preview" alt="Pré-visualização da fotografia">
+            <div class="hint">Escolha uma fotografia da galeria do Android. Para manter o site leve, use uma imagem pequena, de preferência até 1 MB.</div>
+          </div>
+          <div class="field full">
+            <label for="productDescription">Descrição</label>
+            <textarea id="productDescription" maxlength="500" placeholder="Descreva o estado, características e condições do produto..."></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:15px">
+          <button class="btn btn-gold" type="submit">Publicar produto</button>
+          <button class="btn btn-light" type="reset" id="clearForm">Limpar formulário</button>
+        </div>
+      </form>
+      <div class="notice"><strong>Nota importante:</strong> esta versão guarda os produtos apenas neste navegador/telemóvel. O login verdadeiro, a sincronização entre vários telemóveis e os pagamentos M-Pesa/e-Mola ainda precisam de uma base de dados e integração online.</div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>GAM — Possibilidade Imediata</strong><br>
+    Marketplace de Moçambique · Compre e venda com confiança.
+  </footer>
+
+  <div class="modal-backdrop" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="cartTitle">O teu carrinho</h2><button class="btn btn-light" id="closeCart">Fechar ✕</button></div>
+      <div id="cartItems"></div>
+      <div class="cart-total"><span>Total</span><span id="cartTotal">0 MT</span></div>
+      <button class="btn btn-gold" style="width:100%" id="checkoutButton">Enviar pedido pelo WhatsApp</button>
+      <p class="hint">O pedido será preparado para enviares ao vendedor. O pagamento ainda não é processado pelo site.</p>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    "use strict";
+
+    const seedProducts = [
+      {id:"demo-1",code:"GAM-000001",name:"Smartphone Android",price:12500,category:"Telemóveis",location:"Maputo",contact:"",description:"Smartphone Android de demonstração.",emoji:"📱",image:"",demo:true},
+      {id:"demo-2",code:"GAM-000002",name:"Ténis desportivos",price:2200,category:"Moda",location:"Matola",contact:"",description:"Ténis desportivos de demonstração.",emoji:"👟",image:"",demo:true},
+      {id:"demo-3",code:"GAM-000003",name:"Liquidificador",price:1850,category:"Casa",location:"Beira",contact:"",description:"Liquidificador de demonstração.",emoji:"🥤",image:"",demo:true},
+      {id:"demo-4",code:"GAM-000004",name:"Auscultadores Bluetooth",price:950,category:"Eletrónica",location:"Nampula",contact:"",description:"Auscultadores Bluetooth de demonstração.",emoji:"🎧",image:"",demo:true},
+      {id:"demo-5",code:"GAM-000005",name:"Televisor LED 32 polegadas",price:8900,category:"Eletrónica",location:"Maputo",contact:"",description:"Televisor LED de demonstração.",emoji:"📺",image:"",demo:true},
+      {id:"demo-6",code:"GAM-000006",name:"Camisa masculina",price:750,category:"Moda",location:"Matola",contact:"",description:"Camisa casual de demonstração.",emoji:"👕",image:"",demo:true},
+      {id:"demo-7",code:"GAM-000007",name:"Mala de senhora",price:1450,category:"Moda",location:"Beira",contact:"",description:"Mala de demonstração.",emoji:"👜",image:"",demo:true},
+      {id:"demo-8",code:"GAM-000008",name:"Fogão a gás",price:6800,category:"Casa",location:"Nampula",contact:"",description:"Fogão a gás de demonstração.",emoji:"🍳",image:"",demo:true},
+      {id:"demo-9",code:"GAM-000009",name:"Frigorífico",price:18500,category:"Casa",location:"Maputo",contact:"",description:"Frigorífico de demonstração.",emoji:"🧊",image:"",demo:true},
+      {id:"demo-10",code:"GAM-000010",name:"Arroz 5 kg",price:420,category:"Alimentação",location:"Matola",contact:"",description:"Produto alimentar de demonstração.",emoji:"🍚",image:"",demo:true},
+      {id:"demo-11",code:"GAM-000011",name:"Bicicleta",price:7500,category:"Veículos",location:"Beira",contact:"",description:"Bicicleta de demonstração.",emoji:"🚲",image:"",demo:true},
+      {id:"demo-12",code:"GAM-000012",name:"Computador portátil",price:28500,category:"Eletrónica",location:"Nampula",contact:"",description:"Computador portátil de demonstração.",emoji:"💻",image:"",demo:true}
+    ];
+
+    function readJSON(key, fallback) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return value === null ? fallback : value;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    const storedProducts = readJSON("gam_products", null);
+    let products = Array.isArray(storedProducts) && storedProducts.length > 0
+      ? storedProducts
+      : seedProducts.map(product => ({...product}));
+    let cart = readJSON("gam_cart", []);
+    if (!Array.isArray(cart)) cart = [];
+    let activeCategory = "Todos";
+    let selectedImage = "";
+
+    const money = value => new Intl.NumberFormat("pt-MZ").format(Number(value) || 0) + " MT";
+    const el = id => document.getElementById(id);
+
+    function saveData() {
+      try {
+        localStorage.setItem("gam_products", JSON.stringify(products));
+        localStorage.setItem("gam_cart", JSON.stringify(cart));
+      } catch (error) {
+        showToast("Armazenamento cheio. Reduza o tamanho das fotografias.");
+      }
+    }
+
+    function showToast(message) {
+      const toast = el("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      })[char]);
+    }
+
+    function renderProducts() {
+      const query = el("searchInput").value.trim().toLocaleLowerCase("pt");
+      const filtered = products.filter(product => {
+        const matchesCategory = activeCategory === "Todos" || product.category === activeCategory;
+        const searchable = [product.code, product.name, product.description, product.location, product.category].join(" ").toLocaleLowerCase("pt");
+        return matchesCategory && searchable.includes(query);
+      });
+      el("productCount").textContent = filtered.length + (filtered.length === 1 ? " produto" : " produtos");
+      const container = el("products");
+      if (!filtered.length) {
+        container.innerHTML = '<div class="empty">Não encontrámos produtos com essa pesquisa.<br><span class="muted">Tente outra palavra ou escolha “Todos”.</span></div>';
+        return;
+      }
+      container.innerHTML = filtered.map(product => {
+        const imageContent = product.image
+          ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
+          : `<span aria-hidden="true">${escapeHTML(product.emoji || "📦")}</span>`;
+        return `<article class="product-card">
+          <div class="product-image">${imageContent}</div>
+          <div class="product-info">
+            <h3>${escapeHTML(product.name)}</h3>
+            <div class="muted">Código: ${escapeHTML(product.code || "A atribuir")}</div>
+            <div class="price">${money(product.price)}</div>
+            <div class="product-meta"><span>${escapeHTML(product.category)}</span><span>📍 ${escapeHTML(product.location)}</span></div>
+            <div class="product-desc">${escapeHTML(product.description || "Fale com o vendedor para mais informações.")}</div>
+            <div class="product-actions">
+              <button class="btn btn-dark" data-add="${escapeHTML(product.id)}">Adicionar</button>
+              <button class="btn btn-light" data-contact="${escapeHTML(product.id)}">Contactar</button>
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+    }
+
+    function renderCart() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      el("cartCount").textContent = count;
+      if (!cart.length) {
+        el("cartItems").innerHTML = '<div class="empty">O carrinho ainda está vazio.</div>';
+        el("cartTotal").textContent = money(0);
+        return;
+      }
+      let total = 0;
+      el("cartItems").innerHTML = cart.map(item => {
+        const product = products.find(p => p.id === item.id);
+        if (!product) return "";
+        total += Number(product.price) * item.quantity;
+        return `<div class="cart-line">
+          <div><strong>${escapeHTML(product.name)}</strong><small>${money(product.price)} × ${item.quantity}</small></div>
+          <div style="text-align:right"><strong>${money(product.price * item.quantity)}</strong><br><button class="btn btn-danger" style="padding:4px 8px;margin-top:5px" data-remove="${escapeHTML(item.id)}">Remover</button></div>
+        </div>`;
+      }).join("");
+      el("cartTotal").textContent = money(total);
+    }
+
+    function addToCart(id) {
+      const found = cart.find(item => item.id === id);
+      if (found) found.quantity += 1;
+      else cart.push({id,quantity:1});
+      saveData(); renderCart(); showToast("Produto adicionado ao carrinho.");
+    }
+
+    function contactSeller(id) {
+      const product = products.find(item => item.id === id);
+      if (!product) return;
+      const number = String(product.contact || "").replace(/\D/g, "");
+      if (!number) {
+        showToast("Este produto de demonstração ainda não tem contacto de vendedor.");
+        return;
+      }
+      const text = `Olá! Tenho interesse no produto ${product.name}, anunciado no GAM por ${money(product.price)}. Ainda está disponível?`;
+      window.open("https://wa.me/" + number + "?text=" + encodeURIComponent(text), "_blank");
+    }
+
+    el("products").addEventListener("click", event => {
+      const add = event.target.closest("[data-add]");
+      const contact = event.target.closest("[data-contact]");
+      if (add) addToCart(add.dataset.add);
+      if (contact) contactSeller(contact.dataset.contact);
+    });
+
+    el("cartItems").addEventListener("click", event => {
+      const remove = event.target.closest("[data-remove]");
+      if (!remove) return;
+      cart = cart.filter(item => item.id !== remove.dataset.remove);
+      saveData(); renderCart();
+    });
+
+    el("searchInput").addEventListener("input", renderProducts);
+    el("categoryList").addEventListener("click", event => {
+      const chip = event.target.closest("[data-category]");
+      if (!chip) return;
+      activeCategory = chip.dataset.category;
+      document.querySelectorAll(".chip").forEach(button => button.classList.toggle("active", button === chip));
+      renderProducts();
+    });
+
+    el("productPhoto").addEventListener("change", event => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) { selectedImage = ""; el("photoPreview").style.display = "none"; return; }
+      if (!file.type.startsWith("image/")) {
+        showToast("Escolha um ficheiro de imagem.");
+        event.target.value = ""; return;
+      }
+      if (file.size > 1.5 * 1024 * 1024) {
+        showToast("A fotografia é grande. Escolha uma imagem com menos de 1,5 MB.");
+        event.target.value = ""; return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        selectedImage = String(reader.result);
+        el("photoPreview").src = selectedImage;
+        el("photoPreview").style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    el("productForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const product = {
+        id: "gam-" + Date.now() + "-" + Math.random().toString(36).slice(2,7),
+        code: "GAM-" + String(Date.now()).slice(-6),
+        name: el("productName").value.trim(),
+        price: Number(el("productPrice").value),
+        category: el("productCategory").value,
+        location: el("productLocation").value.trim(),
+        contact: el("sellerContact").value.trim(),
+        description: el("productDescription").value.trim(),
+        image: selectedImage,
+        emoji: "📦",
+        demo: false
+      };
+      if (!product.name || !product.price || product.price < 1 || !product.category || !product.location || !product.contact) {
+        showToast("Preencha todos os campos obrigatórios.");
+        return;
+      }
+      products.unshift(product);
+      saveData();
+      renderProducts();
+      event.target.reset();
+      selectedImage = "";
+      el("photoPreview").removeAttribute("src");
+      el("photoPreview").style.display = "none";
+      showToast("Produto adicionado ao catálogo deste dispositivo!");
+      el("catalogue").scrollIntoView({behavior:"smooth"});
+    });
+
+    el("clearForm").addEventListener("click", () => {
+      selectedImage = "";
+      el("photoPreview").removeAttribute("src");
+      el("photoPreview").style.display = "none";
+    });
+
+    el("cartButton").addEventListener("click", () => {
+      renderCart(); el("cartModal").classList.add("show");
+    });
+    el("closeCart").addEventListener("click", () => el("cartModal").classList.remove("show"));
+    el("cartModal").addEventListener("click", event => {
+      if (event.target === el("cartModal")) el("cartModal").classList.remove("show");
+    });
+    el("sellerButton").addEventListener("click", () => el("sellerPanel").scrollIntoView({behavior:"smooth"}));
+    el("seeProducts").addEventListener("click", () => el("catalogue").scrollIntoView({behavior:"smooth"}));
+
+    el("checkoutButton").addEventListener("click", () => {
+      if (!cart.length) { showToast("O carrinho está vazio."); return; }
+      const lines = cart.map(item => {
+        const product = products.find(p => p.id === item.id);
+        return product ? `${product.name} — ${item.quantity} x ${money(product.price)}` : "";
+      }).filter(Boolean);
+      const message = "Olá! Quero fazer este pedido através do GAM:\n" + lines.join("\n");
+      const contacts = [...new Set(cart.map(item => products.find(p => p.id === item.id)?.contact).filter(Boolean))];
+      if (contacts.length === 1) {
+        const number = contacts[0].replace(/\D/g, "");
+        window.open("https://wa.me/" + number + "?text=" + encodeURIComponent(message), "_blank");
+      } else {
+        showToast("Os produtos têm vendedores diferentes. Contacte cada vendedor no respetivo produto.");
+      }
+    });
+
+    // Corrige catálogo vazio antigo sem apagar produtos já guardados.
+    if (!Array.isArray(storedProducts) || storedProducts.length === 0) {
+      products = seedProducts.map(product => ({...product}));
+      saveData();
+    }
+    let nextCode = 13;
+    products.forEach(product => {
+      if (!product.code) {
+        product.code = "GAM-" + String(nextCode).padStart(6, "0");
+        nextCode += 1;
+      }
+    });
+    cart = cart.filter(item => products.some(product => product.id === item.id));
+    saveData();
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
