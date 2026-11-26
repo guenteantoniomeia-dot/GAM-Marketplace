@@ -83,7 +83,7 @@ function renderCats(){document.getElementById("categories").innerHTML=cats.map(c
 function renderProducts(){
  const q=(document.getElementById("search")?.value||"").toLowerCase();
  const list=products.filter(p=>(activeCat==="Todos"||p.cat===activeCat)&&(`${p.name} ${p.cat} ${p.loc}`.toLowerCase().includes(q)));
- document.getElementById("productCount").textContent=list.length+" produto(s)";
+ document.getElementById("productCount").textContent=list.length+" produto(s)"
  document.getElementById("products").innerHTML=list.length?list.map(p=>`<article class="product"><div class="photo">${p.image?`<img src="${safe(p.image)}" alt="">`:p.emoji||"📦"}</div><div class="pbody"><h3>${safe(p.name)}</h3><div class="price">${money(p.price)}</div><div class="small">${safe(p.cat)} · ${safe(p.loc)}</div><div class="small">${safe(p.desc||"")}</div><button class="dark" onclick="addCart(${p.id})">Adicionar ao carrinho</button></div></article>`).join(""):'<div class="panel">Não encontrámos produtos. Experimenta outra pesquisa.</div>';
 }
 function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
