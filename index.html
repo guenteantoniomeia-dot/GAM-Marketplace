@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="GAM — O mercado que aproxima Moçambique.">
+<link rel="manifest" href="manifest.json">
+<title>GAM — Possibilidade Imediata</title>
+<style>
+:root{--gold:#e8bd45;--bg:#f5f5f5;--ink:#171717;--muted:#777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:#111;color:white;padding:18px max(16px,calc((100% - 1100px)/2));border-bottom:3px solid var(--gold)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-size:30px;font-weight:900;color:var(--gold);letter-spacing:1px}.tag{color:#e6c65d;font-size:12px;margin-top:3px}
+nav{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}
+nav button{background:#292929;color:white}.gold{background:var(--gold);color:#171717}.dark{background:#242424;color:white}.light{background:white;border:1px solid #ddd;color:#222}
+main{max-width:1100px;margin:auto;padding:18px 14px}
+.hero{background:#111;color:white;border-radius:18px;padding:24px;margin:8px 0 18px}.hero h1{font-size:clamp(26px,5vw,42px);line-height:1.12;margin:16px 0}.hero p{color:#ddd}.search{display:flex;gap:8px;margin-top:18px}.search input{flex:1;min-width:0}
+input,select,textarea{width:100%;padding:13px;border:1px solid #ccc;border-radius:10px;font:inherit;background:white}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 12px}.sectionhead h2{margin:0;font-size:22px}
+.categories{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}.categories button{white-space:nowrap;background:white;border:1px solid #ddd}.categories button.active{background:#111;color:var(--gold);border-color:#111}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px}.product{background:white;border:1px solid #e5e5e5;border-radius:14px;overflow:hidden}.photo{height:145px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:54px}.photo img{width:100%;height:100%;object-fit:cover}.pbody{padding:12px}.pbody h3{font-size:15px;margin:0 0 7px}.price{font-weight:800;color:#9a7410}.small{font-size:12px;color:var(--muted);margin:6px 0}.pbody button{width:100%;margin-top:8px}
+.panel{background:white;border:1px solid #ddd;border-radius:14px;padding:16px;margin:16px 0}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.formgrid .wide{grid-column:1/-1}.hidden{display:none!important}.notice{background:#fff6d9;border:1px solid #f0d57b;padding:12px;border-radius:10px;font-size:13px;line-height:1.45}
+footer{text-align:center;padding:28px 12px;color:#777;font-size:13px}
+@media(max-width:600px){.hero{padding:19px}.search{flex-direction:column}.formgrid{grid-template-columns:1fr}.formgrid .wide{grid-column:auto}.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<header><div class="top">
+  <div><div class="brand">GAM 🛒</div><div class="tag">POSSIBILIDADE IMEDIATA</div></div>
+  <nav><button onclick="showSection('home')">Início</button><button onclick="showSection('seller')">Vender</button><button onclick="showCart()">Carrinho (<span id="cartCount">0</span>)</button></nav>
+</div></header>
+<main>
+<section id="home">
+  <div class="hero">
+    <div class="tag">O MERCADO QUE APROXIMA MOÇAMBIQUE</div>
+    <h1>Encontra. Compra.<br>Vende. No GAM.</h1>
+    <p>Descobre produtos e lojas de vendedores moçambicanos.</p>
+    <div class="search"><input id="search" placeholder="Pesquisar produtos e lojas..." oninput="renderProducts()"><button class="gold" onclick="renderProducts()">Pesquisar</button></div>
+  </div>
+  <div class="sectionhead"><h2>Categorias</h2></div>
+  <div class="categories" id="categories"></div>
+  <div class="sectionhead"><h2>Produtos disponíveis</h2><span class="small" id="productCount"></span></div>
+  <div class="grid" id="products"></div>
+</section>
+
+<section id="seller" class="hidden">
+  <div class="sectionhead"><h2>Publicar produto</h2><button class="light" onclick="showSection('home')">Voltar</button></div>
+  <div class="notice">Esta primeira versão guarda os produtos neste dispositivo para demonstração. Para publicar para todos os compradores, precisamos ligar uma base de dados e criar contas seguras de vendedores.</div>
+  <form class="panel formgrid" id="productForm">
+    <input class="wide" id="pname" placeholder="Nome do produto" required>
+    <input id="pprice" type="number" min="1" placeholder="Preço em MT" required>
+    <select id="pcat"><option>Outros</option><option>Telemóveis</option><option>Moda</option><option>Casa</option><option>Veículos</option><option>Eletrónica</option><option>Alimentação</option></select>
+    <input id="plocation" placeholder="Cidade / Província" required>
+    <input id="pcontact" placeholder="Contacto do vendedor" required>
+    <input class="wide" id="pimage" type="url" placeholder="Link da fotografia (opcional)">
+    <textarea class="wide" id="pdesc" placeholder="Descrição do produto" rows="3"></textarea>
+    <button class="gold wide" type="submit">Guardar produto neste dispositivo</button>
+  </form>
+</section>
+
+<section id="cart" class="hidden">
+  <div class="sectionhead"><h2>O teu carrinho</h2><button class="light" onclick="showSection('home')">Continuar a comprar</button></div>
+  <div class="panel" id="cartItems"></div>
+  <div class="notice">O carrinho é demonstrativo. O checkout e os pagamentos M-Pesa/e-Mola serão ativados depois da integração segura com os respetivos fornecedores.</div>
+</section>
+</main>
+<footer><strong>GAM — Possibilidade Imediata</strong><br>Marketplace online de Moçambique</footer>
+<script>
+const seed=[
+ {id:1,name:"Smartphone Android",price:12500,cat:"Telemóveis",loc:"Maputo",contact:"",desc:"Telemóvel Android — exemplo de produto.",emoji:"📱"},
+ {id:2,name:"Ténis desportivos",price:2200,cat:"Moda",loc:"Matola",contact:"",desc:"Calçado para uso diário — exemplo.",emoji:"👟"},
+ {id:3,name:"Liquidificador",price:1850,cat:"Casa",loc:"Beira",contact:"",desc:"Eletrodoméstico — exemplo.",emoji:"🥤"},
+ {id:4,name:"Auscultadores",price:950,cat:"Eletrónica",loc:"Nampula",contact:"",desc:"Acessório eletrónico — exemplo.",emoji:"🎧"}
+];
+let products=JSON.parse(localStorage.getItem("gam_products")||"null")||seed;
+let cart=JSON.parse(localStorage.getItem("gam_cart")||"[]");
+let activeCat="Todos";
+const cats=["Todos","Telemóveis","Moda","Casa","Veículos","Eletrónica","Alimentação","Outros"];
+function save(){localStorage.setItem("gam_products",JSON.stringify(products));localStorage.setItem("gam_cart",JSON.stringify(cart));}
+function money(n){return Number(n).toLocaleString("pt-MZ")+" MT"}
+function renderCats(){document.getElementById("categories").innerHTML=cats.map(c=>`<button class="${c===activeCat?'active':''}" onclick="activeCat='${c}';renderCats();renderProducts()">${c}</button>`).join("")}
+function renderProducts(){
+ const q=(document.getElementById("search")?.value||"").toLowerCase();
+ const list=products.filter(p=>(activeCat==="Todos"||p.cat===activeCat)&&(`${p.name} ${p.cat} ${p.loc}`.toLowerCase().includes(q)));
+ document.getElementById("productCount").textContent=list.length+" produto(s)";
+ document.getElementById("products").innerHTML=list.length?list.map(p=>`<article class="product"><div class="photo">${p.image?`<img src="${safe(p.image)}" alt="">`:p.emoji||"📦"}</div><div class="pbody"><h3>${safe(p.name)}</h3><div class="price">${money(p.price)}</div><div class="small">${safe(p.cat)} · ${safe(p.loc)}</div><div class="small">${safe(p.desc||"")}</div><button class="dark" onclick="addCart(${p.id})">Adicionar ao carrinho</button></div></article>`).join(""):'<div class="panel">Não encontrámos produtos. Experimenta outra pesquisa.</div>';
+}
+function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function showSection(id){["home","seller","cart"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));window.scrollTo(0,0)}
+function addCart(id){cart.push(id);save();updateCart();alert("Produto adicionado ao carrinho.");}
+function updateCart(){document.getElementById("cartCount").textContent=cart.length}
+function showCart(){showSection("cart");let counts={};cart.forEach(id=>counts[id]=(counts[id]||0)+1);let entries=Object.entries(counts).map(([id,n])=>({p:products.find(p=>p.id==id),n})).filter(x=>x.p);let total=entries.reduce((s,x)=>s+x.p.price*x.n,0);document.getElementById("cartItems").innerHTML=entries.length?entries.map(x=>`<p><strong>${safe(x.p.name)}</strong> × ${x.n} — ${money(x.p.price*x.n)}</p>`).join("")+`<hr><h3>Total demonstrativo: ${money(total)}</h3><button class="light" onclick="cart=[];save();updateCart();showCart()">Esvaziar carrinho</button>`:"O carrinho está vazio."}
+document.getElementById("productForm").addEventListener("submit",e=>{e.preventDefault();products.unshift({id:Date.now(),name:pname.value,price:Number(pprice.value),cat:pcat.value,loc:plocation.value,contact:pcontact.value,image:pimage.value,desc:pdesc.value});save();e.target.reset();renderProducts();showSection("home");alert("Produto guardado neste dispositivo.");});
+renderCats();renderProducts();updateCart();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body></html>
